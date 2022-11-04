@@ -1,4 +1,4 @@
-# Cucumber bank Prototype 
+# Cucumber Bank Prototype 
 ## Descrição
 Um protótipo com 2 cenários de teste programado em java, ultilizando o Cucumber.
 
