@@ -1,4 +1,4 @@
-# Cucumber Bank Prototype 
+# Cucumber Bank - JUnit
 ## Descrição
 Um protótipo com 2 cenários de teste programado em java, ultilizando o Cucumber e o JUnit.
 
