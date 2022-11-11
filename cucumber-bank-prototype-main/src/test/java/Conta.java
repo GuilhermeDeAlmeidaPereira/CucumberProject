@@ -4,99 +4,92 @@ import io.cucumber.java.en.When;
 
 public class Conta {
 	
-	//  variável para saldo
+	/* Declaração das variáveis saldo e saque */
 	int saldo;
-	
-	//  variável para saque
 	int saque;
+
+	/* Declaração da variável que indicará se o cliente é especial ou não.*/
+	boolean clienteEspecial = true;
 	
-	//  variável para indicar se o cliente é comum
-	boolean clienteComum = false;
+	public int getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(int saldo) {
+		this.saldo = saldo;
+	}
+
+	public int getSaque() {
+		return saque;
+	}
+
+	public void setSaque(int saque) {
+		this.saque = saque;
+	}
+
+	public boolean isClienteEspecial() {
+		return clienteEspecial;
+	}
+
+	public void setClienteEspecial(boolean clienteEspecial) {
+		this.clienteEspecial = clienteEspecial;
+	}
+	/* PRIMEIRO CENARIO: CLIENTE ESPECIAL
 	
-	//  variável para indicar se o cliente é especial
-	boolean clienteEspecial = false;
-	
-	/* Inicio do primeiro cenário: Cliente especial
-	 * 
-	 * @param int1 é o primeiro parâmetro de teste, referente ao saldo atual do cliente especial
-	 * Nesse método, esperasse que o valor recebido para saldo seja -200 e que o cliente seja especial
-	 */
-	
-	@Given("Um cliente especial com saldo atual de {int} reais")
-	public void um_cliente_especial_com_saldo_atual_de_reais(Integer int1) {
-	    // Write code here that turns the phrase above into concrete actions
+	/* @param int1 O primeiro teste, se espera que o cliente seja do tipo especial e que o saldo seja um inteiro */
+	@Given("cliente especial com saldo atual de {int} reais")
+	public void cliente_especial_com_saldo_atual_de_reais(Integer int1) {
 		this.saldo = int1;
-		this.clienteEspecial = true;
-		if(this.saldo != -200 && !this.clienteEspecial)
+		if(this.clienteEspecial != true || !(int1 instanceof Integer))
 			throw new io.cucumber.java.PendingException();
 	}
 
-	/*
-	 * @param int2 é o segundo parâmetro de teste, referente ao valor de saque efetuado pelo cliente especial
-	 * Nesse método, esperasse que o valor recebido para saque seja 100 e que o cliente seja  especial
-	 */
-	
-	@When("for solicitado um saque no valor de {int} reais")
-	public void for_solicitado_um_saque_no_valor_de_reais(Integer int2) {
-	    // Write code here that turns the phrase above into concrete actions
+	/* @param int2 O segundo teste, se espera que o valor recebido seja um inteiro*/	
+	@When("solicitado um saque no valor de {int} reais")
+	public void solicitado_um_saque_no_valor_de_reais(Integer int2) {
 		this.saque = int2;
-		if(this.saque != 100 && !this.clienteEspecial)
+		if(!(int2 instanceof Integer))
 			throw new io.cucumber.java.PendingException();
 	}
 
-	/*
-	 * @param int3 é o terceiro parâmetro de teste, referente ao valor que irá restar de saldo
-	 * do cliente especial após subtrair o saldo recebido antes pelo valor de saque
-	 * Nesse método, esperasse que o valor de saldo seja de -300 e que o cliente seja  especial
-	 */
-	
-	@Then("deve efetuar o saque e atualizar o saldo da conta para {int} reais")
-	public void deve_efetuar_o_saque_e_atualizar_o_saldo_da_conta_para_reais(Integer int3) {
-	    // Write code here that turns the phrase above into concrete actions
-		if(this.saldo - this.saque != int3 && !this.clienteEspecial)
+	/* @param int3 O terceiro teste, se espera que o valor de saldo seja subtraido do saque e que o resultado seja igual ao int3, que seria um número inteiro*/
+	@Then("efetuar o saque e atualizar o saldo da conta para {int} reais")
+	public void efetuar_o_saque_e_atualizar_o_saldo_da_conta_para_reais(Integer int3) {
+		if(int3 instanceof Integer)
+		{
+			setSaldo(getSaldo() - getSaque());
+			if(getSaldo() != int3)
+				throw new io.cucumber.java.PendingException();
+		} else
 			throw new io.cucumber.java.PendingException();
 	}
 
-	/* Inicio do segundo cenário: Cliente comum
-	 * 
-	 * @param int4 é o quarto parâmetro de teste, referente ao saldo atual do cliente comum
-	 * Nesse método, esperasse que o valor recebido para saldo seja -300 e que o cliente seja  comum
-	 */
+	/* SEGUNDO CENARIO: CLIENTE COMUM
 	
-	@Given("Um cliente comum com saldo atual de {int} reais")
-	public void um_cliente_comum_com_saldo_atual_de_reais(Integer int4) {
-	    // Write code here that turns the phrase above into concrete actions
+	 * @param int4  O quarto teste, se espera que o valor seja um inteiro e que o cliente seja comum*/
+	@Given("cliente comum com saldo atual de {int} reais")
+	public void cliente_comum_com_saldo_atual_de_reais(Integer int4) {
 		this.saldo = int4;
-		this.clienteComum = true;
-		if(this.saldo != -300 && !this.clienteComum)
+		if(!(int4 instanceof Integer  ||  this.clienteEspecial == true))
 			throw new io.cucumber.java.PendingException();
 	}
 
-	/*
-	 * @param int5 é o quinto parâmetro de teste, referente ao valor de saque efetuado pelo cliente comum
-	 * Nesse método, esperasse que o valor recebido para saque seja 100 e que o cliente seja  comum
-	 */
-	
+
+	 /* @param int5 O quinto parâmetro de teste se espera que o valor recebido seja um inteiro*/
 	@When("solicitar um saque de {int} reais")
 	public void solicitar_um_saque_de_reais(Integer int5) {
-	    // Write code here that turns the phrase above into concrete actions
 		this.saque = int5;
-		if(this.saque != 200 && !this.clienteComum)
+		if(!(int5 instanceof Integer))
 			throw new io.cucumber.java.PendingException();
 	}
 
-	/*
-	 * Nesse método, esperasse que o cliente seja do tipo normal, sendo assim, por ter saldo negativo,
-	 * não será possível efetuar o saque, sendo retornado a mensagem "Saldo Insuficiente"
-	 */
+	/* Nesse método, esperasse que o cliente seja do tipo normal, se o saldo for menor que o valor de saque, deve ser retornado uma mensagem de "Saldo Insuficiente". */
 	
 	@Then("Não deve efetuar o saque e deve retornar a mensagem Saldo Insuficiente")
 	public void não_deve_efetuar_o_saque_e_deve_retornar_a_mensagem_saldo_insuficiente() {
-	    // Write code here that turns the phrase above into concrete actions
-		if(!this.clienteComum) {
-			throw new io.cucumber.java.PendingException();			
-		} else {
-			System.out.println("Saldo Insuficiente");
-		}
+		if((getSaque() < getSaldo() && !(getSaldo() > 0)))
+			throw new io.cucumber.java.PendingException();
+		if(getSaque() >= getSaldo())
+			System.out.println("Saldo Insuficiente"); 
 	}
 }
